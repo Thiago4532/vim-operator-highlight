@@ -28,6 +28,10 @@ if !exists( 'g:ophigh_color_gui' )
   let g:ophigh_color_gui = "cyan"
 endif
 
+if !exists( 'g:ophigh_color_gui_braces' )
+  let g:ophigh_color_gui_braces = "cyan"
+endif
+
 if !exists( 'g:ophigh_highlight_link_group' )
   let g:ophigh_highlight_link_group = ""
 endif
@@ -35,6 +39,10 @@ endif
 
 if !exists( 'g:ophigh_color' )
   let g:ophigh_color = "cyan"
+endif
+
+if !exists( 'g:ophigh_color_braces' )
+  let g:ophigh_color_braces = "cyan"
 endif
 
 if !exists( 'g:ophigh_filetypes_to_ignore' )
@@ -69,14 +77,18 @@ fun! s:HighlightOperators()
   " for the last element of the regex, see :h /\@!
   " basically, searching for "/" is more complex since we want to avoid
   " matching against "//" or "/*" which would break C++ comment highlighting
-  syntax match OperatorChars "?\|+\|-\|\*\|;\|:\|,\|<\|>\|&\||\|!\|\~\|%\|=\|)\|(\|{\|}\|\.\|\[\|\]\|/\(/\|*\)\@!"
+  syntax match OperatorChars "\^\|?\|+\|-\|\*\|;\|:\|,\|<\|>\|&\||\|!\|\~\|%\|=\|\.\|/\(/\|*\)\@!"
+  syntax match OperatorCharsBraces ")\|(\|{\|}\|\[\|\]"
 
 
   if g:ophigh_highlight_link_group != "" 
     exec "hi link OperatorChars " . g:ophigh_highlight_link_group
+    exec "hi link OperatorCharsBraces " . g:ophigh_highlight_link_group
   else
     exec "hi OperatorChars guifg=" . g:ophigh_color_gui . " gui=NONE"
+    exec "hi OperatorCharsBraces guifg=" . g:ophigh_color_gui_braces . " gui=NONE"
     exec "hi OperatorChars ctermfg=" . g:ophigh_color . " cterm=NONE"
+    exec "hi OperatorCharsBraces ctermfg=" . g:ophigh_color_braces . " cterm=NONE"
   endif
 
 endfunction
